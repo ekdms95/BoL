@@ -4,8 +4,8 @@ if myHero.charName ~= "Soraka" then return end
 
 class "Dabin_Soraka"
 
-require 'HPrediction'
 require 'VPrediction'
+require 'HPrediction'
 
 function Dabin_Soraka:ScriptMsg(msg)
   print("<font color=\"#daa520\"><b>Dabin Soraka:<\b><\font> <font color=\"#FFFFFF\">"..msg.."</font>")
@@ -18,10 +18,10 @@ local Host = "raw.github.com"
 
 local ScriptFilePath = SCRIPT_PATH..GetCurrentEnv().FILE_NAME
 
-local ScriptPath = "/Dabin/bol/Dabin_Soraka".."?rand="..math.random(1,10000)
+local ScriptPath = "/ekqls1995/Bol/master/Script/Dabin_Soraka".."?rand="..math.random(1,10000)
 local UpdateURL = "https://"..Host..ScriptPath
 
-local VersionPath = "/Dabin/bol/Dabin_Soraka.version".."?rand="..math.random(1,10000)
+local VersionPath = "/ekqls1995/Bol/master/version/Dabin_Soraka.version".."?rand="..math.random(1,10000)
 local VersionData = tonumber(GetWebResult(Host, VersionPath))
 
 if VersionData then
@@ -52,13 +52,14 @@ end
 function OnLoad()
 
   Dabin_Soraka = Dabin_Soraka()
-  self:Menu()
+
 end
 -------------------------------------------------------------
 -------------------------------------------------------------
 
 function Dabin_Soraka:__init()
-
+  self:Menu()
+	self:Variables()
 end
 
 -------------------------------------------------------------
@@ -73,7 +74,7 @@ function Dabin_Soraka:Variables()
 
   if myHero:GetSpellData(SUMMONER_1).name:find("sommonerdot") then
     self.Ignite = SUMMONER_1
-  else if myHero:GetSpellData(SUMMONER_2).name:find("sommonerdot") then
+  elseif myHero:GetSpellData(SUMMONER_2).name:find("sommonerdot") then
     self.Ignite = SUMMONER_2
 end
 
@@ -176,8 +177,6 @@ end
 
   self.QTS = TargetSelector(TARGET_LESS_CAST, self.Q.range, DAMAGE_MAGIC, false)
   self.ETS = TargetSelector(TARGET_LESS_CAST, self.E.range, DAMAGE_MAGIC, false)
-  self.STS = TargetSelector(TARGET_LOW_HP, self.S.range)
-	end
 end
 
 -------------------------------------------------------------
@@ -234,18 +233,18 @@ function Dabin_Soraka:Menu()
 	
   self.Menu = scriptConfig("Dabin Soraka", "Dabin Soraka")
     self.Menu:addSubMenu("HitChance", "HitChance")
-    self.Menu.HitChance:addParam("Combo(1.3)", "ComboH", SCRIPT_PARAM_SLICE, 1.3, 1, 3, 1)
-    self.Menu.HitChance:addParam("Harass(1.9)", "HarassH", SCRIPT_PARAM_SLICE, 1.9, 1, 3, 1)
+    self.Menu.HitChance:addParam("ComboH", "Combo(1.3)", SCRIPT_PARAM_SLICE, 1.3, 1, 3, 1)
+    self.Menu.HitChance:addParam("HarassH", "Harass(1.9)", SCRIPT_PARAM_SLICE, 1.9, 1, 3, 1)
 
     self.Menu:addSubMenu("Combo", "Combo")
-    self.Menu.Combo:addParam("use Q", "UseQ", SCRIPT_PARAM_ONOFF, true)
-    self.Menu.Combo:addParam("use W", "UseW", SCRIPT_PARAM_ONOFF, true)
-    self.Menu.Combo:addParam("use E", "UseE", SCRIPT_PARAM_ONOFF, true)
-    self.Menu.Combo:addParam("use R", "UseR", SCRIPT_PARAM_ONOFF, true)
+    self.Menu.Combo:addParam("useQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    self.Menu.Combo:addParam("useW", "Use W", SCRIPT_PARAM_ONOFF, true)
+    self.Menu.Combo:addParam("useE", "Use E", SCRIPT_PARAM_ONOFF, true)
+    self.Menu.Combo:addParam("useR", "Use R", SCRIPT_PARAM_ONOFF, true)
 	
     self.Menu:addSubMenu("Harass", "Harass")
-    self.Menu.Harass:addParam("use Q", "UseQ", SCRIPT_PARAM_ONOFF, true)
-    self.Menu.Harass:addParam("use E", "UseE", SCRIPT_PARAM_ONOFF, true)
+    self.Menu.Harass:addParam("useQ", "Use Q", SCRIPT_PARAM_ONOFF, true)
+    self.Menu.Harass:addParam("useE", "Use E", SCRIPT_PARAM_ONOFF, true)
 
     self.Menu:addSubMenu("Health Potions", "PotionHP")
     self.Menu.PotionHP:addParam("HPONOFF", "Use Auto Potion", SCRIPT_PARAM_ONOFF, true)
@@ -254,12 +253,12 @@ function Dabin_Soraka:Menu()
     self.Menu.PotionMP:addParam("Key", "Use Auto Potion", SCRIPT_PARAM_ONOFF, true)
     self.Menu.PotionMP:addParam("health", "If My Mana below % is <", SCRIPT_PARAM_SLICE, 30, 0, 100, 0)
 
-    self.Menu:addSubMenu("Auto Heal", "AutoHeal")
-    self.Menu.AutoHeal:addparam("AutoW", "AutoR", SCRIPT_PARAM_ONOFF, true)
-    self.Menu.AutoHeal:addparam("AllyHPW", "AllyHPW", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
-    self.Menu.AutoHeal:addparam("AutoR", "AutoR", SCRIPT_PARAM_ONOFF, true)
-    self.Menu.AutoHeal:addparam("AllyHPR", "AllyHPR", SCRIPT_PARAM_SLICE, 20, 0, 100, 0)
-    self.Menu.AutoHeal:addparam("HP %< then AutoHeal Stop", "Stop", SCRIPT_PARAM_SLICE, 25, 0, 100, 0)
+    self.Menu:addSubMenu("AutoHeal", "AutoHeal")
+    self.Menu.AutoHeal:addParam("AutoW", "AutoW", SCRIPT_PARAM_ONOFF, true)
+    self.Menu.AutoHeal:addParam("AllyHPW", "AllyHP is <", SCRIPT_PARAM_SLICE, 50, 0, 100, 0)
+    self.Menu.AutoHeal:addParam("AutoR", "AutoR", SCRIPT_PARAM_ONOFF, true)
+    self.Menu.AutoHeal:addParam("AllyHPR", "Ally Hp is <", SCRIPT_PARAM_SLICE, 20, 0, 100, 0)
+    self.Menu.AutoHeal:addParam("Stop", "HP %< then AutoHeal Stop", SCRIPT_PARAM_SLICE, 25, 0, 100, 0)
 end
 
 -------------------------------------------------------------
@@ -341,14 +340,14 @@ end
 -------------------------------------------------------------
 
 function Dabin_Soraka:PotionHP()
-  if self.menu.PotionHP > myHero.health  then useitem(2003)
+  if self.Menu.PotionHP.healh > 100*(myHero.health/myHero.maxhealth)  then useitem(2003)
 	end
 end
 
 -------------------------------------------------------------
 
 function Dabin_Soraka:PotionMP()
-  if self.menu.PotionMP > myHero.mana then useitem(2004)
+  if self.Menu.PotionMP.healh > 100*(myHero.mana/myHero.maxMana) then useitem(2004)
 	end
 end
 
@@ -362,9 +361,9 @@ function Dabin_Soraka:Checks()
   self.R.ready = myHero:CanUseSpell(_R) == READY
   self.I.ready = self.Ignite ~= nil and myHero:CanUseSpell(self.Ignite) == READY
   
-  for _, item in pairs(self.Items) do
-    item.slot = GetInventorySlotItem(item.id)
-  end
+ -- for _, item in pairs(self.Items) do
+ --   item.slot = GetInventorySlotItem(item.id)
+ -- end
 
   self.EnemyMinions:update()
   self.JungleMobs:update()
