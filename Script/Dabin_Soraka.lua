@@ -53,7 +53,6 @@ function OnLoad()
 
   Dabin_Soraka = Dabin_Soraka()
   self:Menu()
-
 end
 -------------------------------------------------------------
 -------------------------------------------------------------
@@ -72,24 +71,24 @@ function Dabin_Soraka:Variables()
   self.IsRecall = false
   self.RrebornLoaded, self.MMALoaded, self.SxOrbLoaded, self.SOWLoaded = false, false, false, false
 
-  if myHero.:GetSpellData(SUMMONER_1).name:find("sommonerdot") then
+  if myHero:GetSpellData(SUMMONER_1).name:find("sommonerdot") then
     self.Ignite = SUMMONER_1
-  else if myHero.:GetSpellData(SUMMONER_2).name:find("sommonerdot") then
+  else if myHero:GetSpellData(SUMMONER_2).name:find("sommonerdot") then
     self.Ignite = SUMMONER_2
 end
 
-  self.Q = {range = 970, radius = , ready}
+  self.Q = {range = 970, ready}
   self.W = {range = 550, ready}
-  self.E = {range = 925, radius = , ready}
+  self.E = {range = 925, ready}
   self.R = {ready}
   self.I = {range = 600, ready}
 
   self.Items =
-  {["bane"] = {id= , range = , slot = nill, ready}}
+  {["Mikael's Crucible"] = {id = 3222 , range = 750 , slot = nill, ready}}
   self.Items =
-  {["HP"] = {id= , slot = nill, ready}}
+  {["Health Potion"] = {id = 2003 , slot = nill, ready}}
   self.Items =
-  {["MP"] = {id= , slot = nill, ready}}
+  {["Mana Potion"] = {id = 2004 , slot = nill, ready}}
 
   local S5SR = false
   local TT = false  
@@ -178,6 +177,7 @@ end
   self.QTS = TargetSelector(TARGET_LESS_CAST, self.Q.range, DAMAGE_MAGIC, false)
   self.ETS = TargetSelector(TARGET_LESS_CAST, self.E.range, DAMAGE_MAGIC, false)
   self.STS = TargetSelector(TARGET_LOW_HP, self.S.range)
+	end
 end
 
 -------------------------------------------------------------
@@ -301,55 +301,55 @@ function Dabin_Soraka:Tick()
   end
 
 --Auto Cast Heal(W,R)
-  If self.Menu.Auto.On then
+  if self.Menu.AutoHeal.On then
     self.AutoHeal()
 end
 
 --Auto Potion(HP)
-  If self.Menu.PotionHP.On then
+  if self.Menu.PotionHP.On then
     self.PotionHP()
 
 --Auto Potion(MP)
-  If self.Menu.PotionMP.On then
+  if self.Menu.PotionMP.On then
     self.PotionMP()
-
-end
-
--------------------------------------------------------------
-
-function Dabin_Soraka:Combo()
-함수내용
-end
-
--------------------------------------------------------------
-
-function Dabin_Soraka:Harass()
-함수내용
-end
-
--------------------------------------------------------------
-
-function Dabin_Soraka:AutoHeal()
-  If self.W:Ready() then
-    for ally,inpairs(GetAllyHeroes()) do
-      If ally.health < self.Menu.AutoHeal.AllyHPW and GetDistance(ally, myHero) <= W.range
-        self.W:Cast(ally)
-      end
-    end
   end
 end
 
 -------------------------------------------------------------
 
-function Dabin_Soraka:PotionHP()
-  If self.
+function Dabin_Soraka:Combo()
+end
 
+-------------------------------------------------------------
+
+function Dabin_Soraka:Harass()
+end
+
+-------------------------------------------------------------
+
+function Dabin_Soraka:AutoHeal()
+  if self.W:Ready() then
+    for ally in iparis(GetAllyHeroes())do
+      if ally.health < self.Menu.AutoHeal.AllyHPW and GetDistance(ally, myHero) <= W.range then
+        W:Cast(ally)
+				end
+			end
+		end
+	end
+end
+
+-------------------------------------------------------------
+
+function Dabin_Soraka:PotionHP()
+  if self.menu.PotionHP > myHero.health  then useitem(2003)
+	end
 end
 
 -------------------------------------------------------------
 
 function Dabin_Soraka:PotionMP()
-  If self.
+  if self.menu.PotionMP > myHero.mana then useitem(2004)
+	end
 end
 
 -------------------------------------------------------------
@@ -370,5 +370,4 @@ function Dabin_Soraka:Checks()
   self.JungleMobs:update()
   
 end
-
 --------------------------------------------------------------
