@@ -18,7 +18,7 @@ local Host = "raw.github.com"
 
 local ScriptFilePath = SCRIPT_PATH..GetCurrentEnv().FILE_NAME
 
-local ScriptPath = "/ekqls1995/Bol/master/Script/Dabin_Soraka".."?rand="..math.random(1,10000)
+local ScriptPath = "/ekqls1995/Bol/master/Script/Dabin_Soraka.lua".."?rand="..math.random(1,10000)
 local UpdateURL = "https://"..Host..ScriptPath
 
 local VersionPath = "/ekqls1995/Bol/master/version/Dabin_Soraka.version".."?rand="..math.random(1,10000)
