@@ -1,4 +1,4 @@
-_G.Dabin_Soraka_Version = '1.0'
+local Version = "1.0"
 
 if myHero.charName ~= "Soraka" then return end
 
